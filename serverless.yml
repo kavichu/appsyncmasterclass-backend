@@ -32,7 +32,7 @@ functions:
     iamRoleStatements:
       - Effect: Allow
         Action: dynamodb:PutItem
-        Resource: !GetAtt UsersTable.Arn     
+        Resource: !GetAtt UsersTable.Arn
 
 
 resources:
@@ -75,8 +75,8 @@ resources:
         LambdaConfig:
           PostConfirmation: !GetAtt ConfirmUserSignUpLambdaFunction.Arn
 
-    UserPoolInvokeConfirmUserSignUpLambdaPermission:
-      Type: AWS:Lambda:Permission
+    UserPoolInvokeConfirmUserSignupLambdaPermission:
+      Type: AWS::Lambda::Permission
       Properties:
         Action: lambda:invokeFunction
         FunctionName: !Ref ConfirmUserSignUpLambdaFunction
