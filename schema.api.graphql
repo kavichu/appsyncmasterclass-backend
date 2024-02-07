@@ -8,7 +8,8 @@ type Query {
 
   getMyTimeline(limit: Int!, nextToken: String): TweetsPage!
 
-  getProfile: MyProfile!
+  getMyProfile: MyProfile!
+
   getProfile(screenName: String!): OtherProfile!
 
   getTweets(userId: ID!, limit: Int!, nextToken: String): TweetsPage!
@@ -16,7 +17,9 @@ type Query {
   getLikes(userId: ID!, limit: Int!, nextToken: String): TweetsPage!
 
   getFollowers(userId: ID!, limit: Int!, nextToken: String): ProfilesPage!
+
   getFollowing(userId: ID!, limit: Int!, nextToken: String): ProfilesPage!
+
 }
 
 type Mutation {
@@ -101,7 +104,13 @@ type OtherProfile implements IProfile {
 
 interface ITweet {
   id: ID!
-  profile: IProfile!
+  profile: IProfile
+  createdAt: AWSDateTime!
+}
+
+type Tweet implements ITweet {
+  id: ID!
+  profile: IProfile
   createdAt: AWSDateTime!
   text: String!
   replies: Int!
@@ -109,12 +118,6 @@ interface ITweet {
   retweets: Int!
   liked: Boolean!
   retweeted: Boolean!
-}
-
-type Tweet implements ITweet{
-  id: ID!
-  profile: IProfile!
-  createdAt: AWSDateTime!
 }
 
 type Reply implements ITweet {

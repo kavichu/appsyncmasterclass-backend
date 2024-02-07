@@ -11,6 +11,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "serverless": "^3.38.0"
+    "serverless": "^3.38.0",
+    "serverless-appsync-plugin": "^2.6.0"
+  },
+  "dependencies": {
+    "serverless-better-credentials": "^2.0.0"
   }
 }
