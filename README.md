@@ -2,7 +2,9 @@
 
 npm install --save-dev serverless
 npm install --save-dev serverless-appsync-plugin
+npm install --dev serverless-better-credentials
 
 npm run sls -- create -t aws-nodejs
 
-export AWS_SDK_LOAD_CONFIG=1
+export AWS_PROFILE=<your-profile>
+npm run sls -- deploy
