@@ -4,11 +4,15 @@ frameworkVersion: "3"
 plugins:
   - serverless-appsync-plugin
   - serverless-better-credentials
+  - serverless-iam-roles-per-function
 
 provider:
   name: aws
   runtime: nodejs18.x
   region: us-east-1
+  environment:
+    STAGE: ${self:custom.stage}
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
 
 package:
   exclude:
@@ -17,9 +21,38 @@ package:
 
 appSync: ${file(serverless.appsync-api.yml)}
 
+custom:
+  stage: ${opt:stage, self:provider.stage}
+
+functions:
+  confirmUserSignUp:
+    handler: functions/confirm-user-signup.handler
+    environment:
+      USERS_TABLE: !Ref UsersTable
+    iamRoleStatements:
+      - Effect: Allow
+        Action: dynamodb:PutItem
+        Resource: !GetAtt UsersTable.Arn     
+
 
 resources:
   Resources:
+    UsersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        Tags:
+          - Key: Environment
+            Value: ${self:custom.stage}
+          - Key: Name
+            Value: users-table
+
     CognitoUserPool:
       Type: AWS::Cognito::UserPool
       Properties:
@@ -39,6 +72,17 @@ resources:
             Name: name
             Required: false
             Mutable: true
+        LambdaConfig:
+          PostConfirmation: !GetAtt ConfirmUserSignUpLambdaFunction.Arn
+
+    UserPoolInvokeConfirmUserSignUpLambdaPermission:
+      Type: AWS:Lambda:Permission
+      Properties:
+        Action: lambda:invokeFunction
+        FunctionName: !Ref ConfirmUserSignUpLambdaFunction
+        Principal: cognito-idp.amazonaws.com
+        SourceArn: !GetAtt CognitoUserPool.Arn
+
     WebUserPoolClient:
       Type: AWS::Cognito::UserPoolClient
       Properties:
