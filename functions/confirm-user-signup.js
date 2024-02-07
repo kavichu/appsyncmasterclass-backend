@@ -7,7 +7,7 @@ const chance = new Chance()
 const { USERS_TABLE } = process.env
 
 module.exports.handler = async (event) => {
-  console.log(event)
+  console.log("handler.event: ", event)
   if(event.triggerSource === "PostConfirmation_ConfirmSignUp"){
     const name = event.request.userAttributes["name"]
     const suffix = chance.string({length: 8, casing: "upper", alpha: true, numeric: true})
@@ -16,7 +16,7 @@ module.exports.handler = async (event) => {
       id: event.userName,
       name,
       screenName,
-      createdAt: new Date.toJSON(),
+      createdAt: new Date().toJSON(),
       followersCount: 0,
       followingCount: 0,
       tweetsCount: 0,
@@ -25,7 +25,8 @@ module.exports.handler = async (event) => {
     await DocumentClient.put({
       TableName: USERS_TABLE,
       Item: user
-    })
+    }).promise()
+
     return event
   }
 }

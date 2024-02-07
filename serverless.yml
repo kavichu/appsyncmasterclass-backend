@@ -1,3 +1,5 @@
+org: lvlds
+app: appsync-masterclass-backend
 service: appsyncmasterclass-backend
 frameworkVersion: "3"
 
@@ -5,6 +7,9 @@ plugins:
   - serverless-appsync-plugin
   - serverless-better-credentials
   - serverless-iam-roles-per-function
+
+dashboard:
+  disableMonitoring: true
 
 provider:
   name: aws
@@ -22,7 +27,10 @@ package:
 appSync: ${file(serverless.appsync-api.yml)}
 
 custom:
-  stage: ${opt:stage, self:provider.stage}
+  stage: ${opt:stage, "dev"}
+  export-env:
+    filename: .env
+    overwrite: true
 
 functions:
   confirmUserSignUp:
