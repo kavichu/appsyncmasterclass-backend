@@ -28,5 +28,7 @@ module.exports.handler = async (event) => {
     }).promise()
 
     return event
+  }else{
+    return event
   }
 }
