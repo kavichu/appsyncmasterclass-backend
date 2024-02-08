@@ -88,6 +88,7 @@ const a_user_calls_getMyProfile = async (user) => {
       getMyProfile {
         id
         name
+        screenName
         imageUrl
         backgroundImageUrl
         bio
