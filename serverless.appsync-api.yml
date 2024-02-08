@@ -15,6 +15,10 @@ dataSources:
     description: "Users table"
     config:
       tableName: !Ref UsersTable
+  getImageUrlFunction:
+    type: 'AWS_LAMBDA'
+    config:
+      functionName: getImageUploadUrl
 
 resolvers:
   Query.getMyProfile:
@@ -22,6 +26,10 @@ resolvers:
       - dataSource: usersTable
         request: mapping-templates/Query.getMyProfile.request.vtl
         response: mapping-templates/Query.getMyProfile.response.vtl
+  Query.getImageUploadUrl:
+    kind: UNIT
+    dataSource: getImageUrlFunction
+
   Mutation.editMyProfile:
     functions:
       - dataSource: usersTable
