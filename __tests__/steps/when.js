@@ -119,9 +119,42 @@ const a_user_calls_getMyProfile = async (user) => {
     return profile
 }
 
+const a_user_calls_editMyProfile = async (user, input) => {
+  const editMyProfile = `
+  mutation MyMutation($input: ProfileInput!) {
+    editMyProfile(newProfile: $input) {
+      id
+      name
+      screenName
+      imageUrl
+      backgroundImageUrl
+      bio
+      location
+      website
+      birthdate
+      createdAt
+      followersCount
+      followingCount
+      likesCount
+      tweetsCount
+    }
+  }
+`
+  const variables = {
+    input
+  }
+  const data = await GraphQL(process.env.API_URL, editMyProfile, variables, user.accessToken)
+  const profile = data.editMyProfile
+
+  console.log(`[${user.username}] - edited profile`)
+
+  return profile
+}
+
 module.exports = {
   we_invoke_confirmUserSignUp,
   user_signs_up,
   we_invoke_an_appsync_template,
-  a_user_calls_getMyProfile
+  a_user_calls_getMyProfile,
+  a_user_calls_editMyProfile,
 }
