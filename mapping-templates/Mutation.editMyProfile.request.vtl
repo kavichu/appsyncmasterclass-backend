@@ -8,7 +8,7 @@
     "expression": "set #name = :name, imageUrl = :imageUrl, backgroundImageUrl = :backgroundImageUrl, bio = :bio, #location = :location, website = :website, birthdate = :birthdate",
     "expressionNames": {
       "#name": "name",
-      "#location": "location",
+      "#location": "location"
     },
     "expressionValues": {
       ":name": $util.dynamodb.toDynamoDBJson($context.arguments.newProfile.name),
@@ -17,7 +17,7 @@
       ":bio": $util.dynamodb.toDynamoDBJson($context.arguments.newProfile.bio),
       ":location": $util.dynamodb.toDynamoDBJson($context.arguments.newProfile.location),
       ":website": $util.dynamodb.toDynamoDBJson($context.arguments.newProfile.website),
-      ":birthdate": $util.dynamodb.toDynamoDBJson($context.arguments.newProfile.birthdate),
+      ":birthdate": $util.dynamodb.toDynamoDBJson($context.arguments.newProfile.birthdate)
     }
   },
   "condition": {

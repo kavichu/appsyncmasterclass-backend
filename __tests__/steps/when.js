@@ -79,7 +79,14 @@ const we_invoke_an_appsync_template = (templatePath, context) => {
     valueMapper: velocityMapper.map,
     escape: false
   })
-  return JSON.parse(compiler.render(context))
+  const result = compiler.render(context)
+  try {
+    return JSON.parse(result)
+  }catch(error) {
+    console.log("catch.error", error)
+    console.log("catch.result", result)
+    throw error
+  }
 }
 
 const a_user_calls_getMyProfile = async (user) => {
