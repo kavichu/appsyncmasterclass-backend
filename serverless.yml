@@ -46,7 +46,7 @@ functions:
     handler: functions/get-upload-url.handler
     environment:
       BUCKET_NAME: !Ref AssetsBucket
-    iamRoleStatement:
+    iamRoleStatements:
       - Effect: Allow
         Action:
           - s3:PutObject
