@@ -18,8 +18,10 @@
     "amplify-appsync-simulator": "^2.4.1",
     "amplify-velocity-template": "^1.4.14",
     "aws-sdk": "^2.1553.0",
+    "axios": "^1.6.7",
     "dotenv": "^16.4.1",
     "jest": "^29.7.0",
+    "lodash": "^4.17.21",
     "serverless": "^3.38.0",
     "serverless-appsync-plugin": "^2.6.0",
     "serverless-iam-roles-per-function": "^3.2.0"

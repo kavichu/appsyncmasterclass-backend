@@ -2,6 +2,8 @@ require("dotenv").config()
 const AWS = require('aws-sdk')
 const fs = require("fs")
 
+const GraphQL = require("../lib/graphql")
+
 const velocityMapper = require("amplify-appsync-simulator/lib/velocity/value-mapper/mapper")
 const velocityTemplate = require("amplify-velocity-template")
 
@@ -80,8 +82,38 @@ const we_invoke_an_appsync_template = (templatePath, context) => {
   return JSON.parse(compiler.render(context))
 }
 
+const a_user_calls_getMyProfile = async (user) => {
+    const getMyProfile = `
+    query MyQuery {
+      getMyProfile {
+        id
+        name
+        imageUrl
+        backgroundImageUrl
+        bio
+        location
+        website
+        birthdate
+        createdAt
+        followersCount
+        followingCount
+        likesCount
+        tweetsCount
+      }
+    }
+    
+`
+    const data = await GraphQL(process.env.API_URL, getMyProfile, {}, user.accessToken)
+    const profile = data.getMyProfile
+
+    console.log(`[${user.username}] - fetched profile`)
+
+    return profile
+}
+
 module.exports = {
   we_invoke_confirmUserSignUp,
   user_signs_up,
-  we_invoke_an_appsync_template
+  we_invoke_an_appsync_template,
+  a_user_calls_getMyProfile
 }
