@@ -25,5 +25,5 @@ resolvers:
   Mutation.editMyProfile:
     functions:
       - dataSource: usersTable
-        request: mapping-templates/Mutation.getMyProfile.request.vtl
-        response: mapping-templates/Mutation.getMyProfile.response.vtl
+        request: mapping-templates/Mutation.editMyProfile.request.vtl
+        response: mapping-templates/Mutation.editMyProfile.response.vtl
