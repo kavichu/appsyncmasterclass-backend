@@ -13,7 +13,7 @@ describe("When getImageUploadUrl runs", () => {
     console.log("signedUrl: ", signedUrl)
 
     const { BUCKET_NAME } = process.env
-    const regex = new RegExp(`https://${BUCKET_NAME}.s3-accelerate.amazonaws.com/${username}/.*${extension || ""}\?.*Content-Type=${contentType ? contentType.replace("/", "%2F") : "image/jpeg"}.*]`)
+    const regex = new RegExp(`https://${BUCKET_NAME}.s3-accelerate.amazonaws.com/${username}/.*${extension || ''}\?.*Content-Type=${contentType ? contentType.replace('/', '%2F') : 'image%2Fjpeg'}.*`)
     expect(signedUrl).toMatch(regex)
   })
 })
