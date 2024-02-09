@@ -4,7 +4,11 @@ const chance = require("chance").Chance()
 
 describe("When getImageUploadUrl runs", () => {
   it.each([
-    [".png", "image/png"]
+    [".png", "image/png"],
+    [".jpeg", "image/jpeg"],
+    [".png", null],
+    [null, "image/jpeg"],
+    [null, null]
   ])("Returns a signed s3 url for extension %s and content type %s", async (extension, contentType) => {
     const username = chance.guid()
 
