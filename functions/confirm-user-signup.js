@@ -4,7 +4,7 @@ const DocumentClient = new DynamoDB.DocumentClient()
 const Chance = require("chance")
 const chance = new Chance()
 
-const { USERS_TABLE } = process.env
+const { USERS_TABLE_NAME } = process.env
 
 module.exports.handler = async (event) => {
   console.log("handler.event: ", event)
@@ -23,7 +23,7 @@ module.exports.handler = async (event) => {
       likesCount: 0,
     }
     await DocumentClient.put({
-      TableName: USERS_TABLE,
+      TableName: USERS_TABLE_NAME,
       Item: user
     }).promise()
 

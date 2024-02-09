@@ -6,9 +6,9 @@ const fs = require("fs")
 const user_exists_in_UsersTable = async (id) => {
   const DynamoDB = new AWS.DynamoDB.DocumentClient()
 
-  console.log(`looking for user [${id}] in table [${process.env.USERS_TABLE}]`)
+  console.log(`looking for user [${id}] in table [${process.env.USERS_TABLE_NAME}]`)
   const resp = await DynamoDB.get({
-    TableName: process.env.USERS_TABLE,
+    TableName: process.env.USERS_TABLE_NAME,
     Key: {
       id
     }

@@ -19,6 +19,10 @@ dataSources:
     type: 'AWS_LAMBDA'
     config:
       functionName: getImageUploadUrl
+  tweetFunction:
+    type: 'AWS_LAMBDA'
+    config:
+      functionName: tweet
 
 resolvers:
   Query.getMyProfile:
@@ -26,6 +30,7 @@ resolvers:
       - dataSource: usersTable
         request: mapping-templates/Query.getMyProfile.request.vtl
         response: mapping-templates/Query.getMyProfile.response.vtl
+
   Query.getImageUploadUrl:
     kind: UNIT
     dataSource: getImageUrlFunction
@@ -35,3 +40,8 @@ resolvers:
       - dataSource: usersTable
         request: mapping-templates/Mutation.editMyProfile.request.vtl
         response: mapping-templates/Mutation.editMyProfile.response.vtl
+
+  Mutation.tweet:
+      kind: UNIT
+      dataSource: tweetFunction
+
