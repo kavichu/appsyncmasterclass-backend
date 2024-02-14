@@ -15,26 +15,51 @@ dataSources:
     description: "Users table"
     config:
       tableName: !Ref UsersTable
+
+  tweetsTable:
+    type: AMAZON_DYNAMODB
+    description: "Tweets table"
+    config:
+      tableName: !Ref TweetsTable
+
   getImageUrlFunction:
     type: 'AWS_LAMBDA'
     config:
       functionName: getImageUploadUrl
+
   tweetFunction:
     type: 'AWS_LAMBDA'
     config:
       functionName: tweet
 
 resolvers:
+  # Queries
   Query.getMyProfile:
     functions:
       - dataSource: usersTable
         request: mapping-templates/Query.getMyProfile.request.vtl
         response: mapping-templates/Query.getMyProfile.response.vtl
 
+  Query.getTweets:
+    functions:
+      - dataSource: tweetsTable
+        request: mapping-templates/Query.getTweets.request.vtl
+        response: mapping-templates/Query.getTweets.response.vtl
+
   Query.getImageUploadUrl:
     kind: UNIT
     dataSource: getImageUrlFunction
 
+  # Nested fields
+  profile:
+    type: Tweet
+    field: profile
+    functions:
+      - dataSource: usersTable
+        request: mapping-templates/Tweet.profile.request.vtl
+        response: mapping-templates/Tweet.profile.response.vtl
+
+  # Mutations
   Mutation.editMyProfile:
     functions:
       - dataSource: usersTable
