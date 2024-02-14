@@ -1,3 +1,4 @@
+require("dotenv").config()
 const given = require("../../steps/given")
 const when = require("../../steps/when")
 const then = require("../../steps/then")
