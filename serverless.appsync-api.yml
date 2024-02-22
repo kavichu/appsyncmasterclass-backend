@@ -22,6 +22,12 @@ dataSources:
     config:
       tableName: !Ref TweetsTable
 
+  timelinesTable:
+    type: AMAZON_DYNAMODB
+    description: "Timelines table"
+    config:
+      tableName: !Ref TimelinesTable
+
   getImageUrlFunction:
     type: 'AWS_LAMBDA'
     config:
@@ -50,6 +56,12 @@ resolvers:
     kind: UNIT
     dataSource: getImageUrlFunction
 
+  Query.getMyTimeline:
+    functions:
+      - dataSource: timelinesTable
+        request: mapping-templates/Query.getMyTimeline.request.vtl
+        response: mapping-templates/Query.getMyTimeline.response.vtl
+
   # Nested fields
   profile:
     type: Tweet
@@ -58,6 +70,14 @@ resolvers:
       - dataSource: usersTable
         request: mapping-templates/Tweet.profile.request.vtl
         response: mapping-templates/Tweet.profile.response.vtl
+
+  tweets:
+    type: TimelinePage
+    field: tweets
+    functions:
+      - dataSource: tweetsTable
+        request: mapping-templates/TimelinePage.tweets.request.vtl
+        response: mapping-templates/TimelinePage.tweets.response.vtl
 
   # Mutations
   Mutation.editMyProfile:
@@ -70,3 +90,5 @@ resolvers:
       kind: UNIT
       dataSource: tweetFunction
 
+substitutions:
+  TweetsTable: !Ref TweetsTable

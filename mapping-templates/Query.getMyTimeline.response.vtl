@@ -1,0 +1,4 @@
+{
+  "tweets": $util.toJson($context.result.items),
+  "nextToken": $utils.toJson($util.defaultIfNullorBlank($context.result.nextToken, null))
+}
