@@ -263,11 +263,48 @@ const a_user_calls_getTweets = async (user, userId, limit, nextToken) => {
     nextToken
   }
   const data = await GraphQL(process.env.API_URL, getTweets, variables, user.accessToken)
-  const newTweet = data.getTweets
+  const result = data.getTweets
 
   console.log(`[${user.username}] - posted new tweet`)
 
-  return newTweet
+  return result
+}
+
+const a_user_calls_getMyTimeline = async (user, limit, nextToken) => {
+  const getMyTimeline = `
+  query getMyTimeline($limit: Int!, $nextToken: String) {
+    getMyTimeline(limit: $limit, nextToken: $nextToken) {
+      nextToken
+      tweets {
+        id
+        createdAt
+        profile {
+          id
+          name
+          screenName
+        }
+        ... on Tweet {
+          text
+          replies
+          likes
+          retweets
+        }
+
+      }
+      
+    }
+  }
+`
+  const variables = {
+    limit,
+    nextToken
+  }
+  const data = await GraphQL(process.env.API_URL, getMyTimeline, variables, user.accessToken)
+  const result = data.getMyTimeline
+
+  console.log(`[${user.username}] - posted new tweet`)
+
+  return result
 }
 
 module.exports = {
@@ -281,4 +318,5 @@ module.exports = {
   we_invoke_tweet,
   a_user_calls_tweet,
   a_user_calls_getTweets,
+  a_user_calls_getMyTimeline,
 }
