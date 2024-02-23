@@ -94,6 +94,14 @@ resolvers:
         request: mapping-templates/Tweet.profile.request.vtl
         response: mapping-templates/Tweet.profile.response.vtl
 
+  liked:
+    type: Tweet
+    field: liked
+    functions:
+      - dataSource: likesTable
+        request: mapping-templates/Tweet.liked.request.vtl
+        response: mapping-templates/Tweet.liked.response.vtl
+
   tweets:
     type: TimelinePage
     field: tweets
