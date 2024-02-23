@@ -28,6 +28,29 @@ dataSources:
     config:
       tableName: !Ref TimelinesTable
 
+  likesTable:
+    type: AMAZON_DYNAMODB
+    description: "Likes table"
+    config:
+      tableName: !Ref LikesTable
+
+  likeMutation:
+    type: AMAZON_DYNAMODB
+    description: "Likes table"
+    config:
+      tableName: !Ref LikesTable
+      iamRoleStatements:
+        - Effect: Allow
+          Action:
+            - dynamodb:PutItem
+          Resource: !GetAtt LikesTable.Arn
+        - Effect: Allow
+          Action:
+            - dynamodb:UpdateItem
+          Resource:
+            - !GetAtt UsersTable.Arn
+            - !GetAtt TweetsTable.Arn
+
   getImageUrlFunction:
     type: 'AWS_LAMBDA'
     config:
@@ -90,5 +113,13 @@ resolvers:
       kind: UNIT
       dataSource: tweetFunction
 
+  Mutation.like:
+      kind: UNIT
+      dataSource: likeMutation
+      request: mapping-templates/Mutation.like.request.vtl
+      response: mapping-templates/Mutation.like.response.vtl
+
 substitutions:
   TweetsTable: !Ref TweetsTable
+  LikesTable: !Ref LikesTable
+  UsersTable: !Ref UsersTable
