@@ -51,6 +51,23 @@ dataSources:
             - !GetAtt UsersTable.Arn
             - !GetAtt TweetsTable.Arn
 
+  unlikeMutation:
+    type: AMAZON_DYNAMODB
+    description: "Likes table"
+    config:
+      tableName: !Ref LikesTable
+      iamRoleStatements:
+        - Effect: Allow
+          Action:
+            - dynamodb:DeleteItem
+          Resource: !GetAtt LikesTable.Arn
+        - Effect: Allow
+          Action:
+            - dynamodb:UpdateItem
+          Resource:
+            - !GetAtt UsersTable.Arn
+            - !GetAtt TweetsTable.Arn
+
   getImageUrlFunction:
     type: 'AWS_LAMBDA'
     config:
@@ -126,6 +143,12 @@ resolvers:
       dataSource: likeMutation
       request: mapping-templates/Mutation.like.request.vtl
       response: mapping-templates/Mutation.like.response.vtl
+
+  Mutation.unlike:
+      kind: UNIT
+      dataSource: unlikeMutation
+      request: mapping-templates/Mutation.unlike.request.vtl
+      response: mapping-templates/Mutation.unlike.response.vtl
 
 substitutions:
   TweetsTable: !Ref TweetsTable

@@ -349,6 +349,23 @@ const a_user_calls_like = async (user, tweetId) => {
   return result
 }
 
+const a_user_calls_unlike = async (user, tweetId) => {
+  const unlike = `
+  mutation unlike($tweetId: ID!) {
+    unlike(tweetId: $tweetId)
+  }
+`
+  const variables = {
+    tweetId
+  }
+  const data = await GraphQL(process.env.API_URL, unlike, variables, user.accessToken)
+  const result = data.unlike
+
+  console.log(`[${user.username}] - liked tweet`)
+
+  return result
+}
+
 module.exports = {
   we_invoke_confirmUserSignUp,
   user_signs_up,
@@ -362,4 +379,5 @@ module.exports = {
   a_user_calls_getTweets,
   a_user_calls_getMyTimeline,
   a_user_calls_like,
+  a_user_calls_unlike,
 }
